@@ -35,6 +35,15 @@ break;
 return head;
 }
 
+Node* GetNode(Node* head,int index) {
+Node* p = head;
+for(int i = 0; p->next != NULL; p = p->next) {
+if(i == index) {break;}
+++i;
+}
+return p;
+}
+
 Node* RemoveNode(Node* head,int index) {
 Node* p;
 Node* prev;
