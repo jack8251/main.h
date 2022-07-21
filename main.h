@@ -73,6 +73,36 @@ p = p->next;
 printf("%s \n",p->item);
 }
 
+long int GetFileSize(FILE* fp) {
+fseek(fp,0,SEEK_END);
+long int length = ftell(fp);
+fclose(fp);
+return length;
+}
+
+long int GetFileLineSize(FILE* fp) {
+char* line = NULL;
+size_t len = 0;
+ssize_t size;
+size = getline(&line, &len, fp);
+if(line) {free(line);}
+return size;
+}
+
+Node* GetFileLines(FILE* fp) {
+char * line = NULL;
+size_t len = 0;
+ssize_t read;
+Node* head = MakeNode("head");
+while((read = getline(&line, &len, fp)) != -1) {
+Node* p = MakeNode(line);
+LinkEnd(head,p);
+}
+if(line) {free(line);}
+head = RemoveNode(head,0);
+return head;
+}
+
 Node* SplitText(Node* start,char SplitChar) {
 Node* head = MakeNode("head");
 char buffer[strlen(start->item)];
