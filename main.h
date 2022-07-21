@@ -73,19 +73,22 @@ p = p->next;
 printf("%s \n",p->item);
 }
 
-Node* SplitText(char* text,char SplitChar) {
+Node* SplitText(Node* start,char SplitChar) {
 Node* head = MakeNode("head");
-char buffer[strlen(text)];
-char* p = &text[0];
+char buffer[strlen(start->item)];
+char* p = &(start->item[0]);
 int i = 0;
-while(i < strlen(text)) {
+while(i < strlen(start->item)) {
 if(*p == SplitChar) {
+buffer[i] = '\0';
 LinkEnd(head,MakeNode(buffer));
 i = -1;
 } else {buffer[i] = *p;}
 ++p;
 ++i;
 }
+buffer[i] = '\0';
 LinkEnd(head,MakeNode(buffer));
+head = RemoveNode(head,0);
 return head;
 }
