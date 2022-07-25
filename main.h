@@ -5,25 +5,25 @@
 typedef struct node {
 char* item;
 struct node* next;
-} Node;
+} List;
 
-Node* MakeNode(char* item) {
-Node* newp;
-newp = (Node*)malloc(sizeof(Node));
+List* MakeNode(char* item) {
+List* newp;
+newp = (List*)malloc(sizeof(List));
 newp->item = (char*)malloc(strlen(item)+1);
 strcpy(newp->item,item);
 return newp;
 }
 
-Node* LinkEnd(Node* head,Node* p1) {
-Node* p;
+List* LinkEnd(List* head,List* p1) {
+List* p;
 for(p = head; p->next != NULL; p = p->next);
 p->next = p1;
 return head;
 }
 
-Node* LinkNode(Node* head,Node* p1,int index) {
-Node* p;
+List* LinkNode(List* head,List* p1,int index) {
+List* p;
 int i = 0;
 for(p = head; p->next != NULL; p = p->next) {
 if(i == index) {
@@ -35,8 +35,8 @@ break;
 return head;
 }
 
-Node* GetNode(Node* head,int index) {
-Node* p = head;
+List* GetNode(List* head,int index) {
+List* p = head;
 for(int i = 0; p->next != NULL; p = p->next) {
 if(i == index) {break;}
 ++i;
@@ -44,9 +44,9 @@ if(i == index) {break;}
 return p;
 }
 
-Node* RemoveNode(Node* head,int index) {
-Node* p;
-Node* prev;
+List* RemoveNode(List* head,int index) {
+List* p;
+List* prev;
 int i = 0;
 prev = NULL;
 for (p = head; p != NULL; p = p->next) {
@@ -64,8 +64,8 @@ prev = p;
 }
 }
 
-void PrintList(Node* head) {
-Node* p = head;
+void PrintList(List* head) {
+List* p = head;
 while(p->next != NULL) {
 printf("%s \n",p->item);
 p = p->next;
@@ -89,13 +89,13 @@ if(line) {free(line);}
 return size;
 }
 
-Node* GetFileLines(FILE* fp) {
+List* GetFileLines(FILE* fp) {
 char * line = NULL;
 size_t len = 0;
 ssize_t read;
-Node* head = MakeNode("head");
+List* head = MakeNode("head");
 while((read = getline(&line, &len, fp)) != -1) {
-Node* p = MakeNode(line);
+List* p = MakeNode(line);
 LinkEnd(head,p);
 }
 if(line) {free(line);}
@@ -103,8 +103,8 @@ head = RemoveNode(head,0);
 return head;
 }
 
-Node* SplitText(Node* start,char SplitChar) {
-Node* head = MakeNode("head");
+List* SplitText(List* start,char SplitChar) {
+List* head = MakeNode("head");
 char buffer[strlen(start->item)];
 char* p = &(start->item[0]);
 int i = 0;
