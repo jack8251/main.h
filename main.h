@@ -7,11 +7,27 @@ char* item;
 struct node* next;
 } List;
 
-List* MakeNode(char* item) {
+typedef struct TreeNode {
+char* item;
+struct TreeNode* right;
+struct TreeNode* left;
+} Tree;
+
+List* MakeListNode(char* item) {
 List* newp;
 newp = (List*)malloc(sizeof(List));
 newp->item = (char*)malloc(strlen(item)+1);
 strcpy(newp->item,item);
+return newp;
+}
+
+Tree* MakeTreeNode(char* item) {
+Tree* newp;
+newp = (Tree*)malloc(sizeof(Tree));
+newp->item = (char*)malloc(strlen(item)+1);
+strcpy(newp->item,item);
+newp->right = NULL;
+newp->left = NULL;
 return newp;
 }
 
@@ -71,6 +87,14 @@ printf("%s \n",p->item);
 p = p->next;
 }
 printf("%s \n",p->item);
+}
+
+void PrintTree(Tree* head) {
+if(head) {
+PrintTree(head->left);
+printf("%s\n",head->item);
+PrintTree(head->right);
+}
 }
 
 long int GetFileSize(FILE* fp) {
