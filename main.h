@@ -13,7 +13,7 @@ struct TreeNode* right;
 struct TreeNode* left;
 } Tree;
 
-List* MakeListNode(char* item) {
+List* MakeNode(char* item) {
 List* newp;
 newp = (List*)malloc(sizeof(List));
 newp->item = (char*)malloc(strlen(item)+1);
