@@ -7,13 +7,17 @@ char* item;
 struct node* next;
 } List;
 
+typedef struct branch {
+struct TreeNode* node;
+struct branch* next;
+} Branch;
+
 typedef struct TreeNode {
 char* item;
-struct TreeNode* right;
-struct TreeNode* left;
+struct branch* TreeBranch;
 } Tree;
 
-List* MakeNode(char* item) {
+List* MakeListNode(char* item) {
 List* newp;
 newp = (List*)malloc(sizeof(List));
 newp->item = (char*)malloc(strlen(item)+1);
@@ -21,24 +25,37 @@ strcpy(newp->item,item);
 return newp;
 }
 
-Tree* MakeTreeNode(char* item) {
+Branch* MakeTreeBranch(int BranchCount) {
+Branch* head = (Branch*)malloc(sizeof(Branch));;
+Branch* p = head;
+for(int i = 0; i < BranchCount; ++i) {
+Branch* newp;
+newp = (Branch*)malloc(sizeof(Branch));
+newp->node = NULL;
+p->next = newp;
+p = p->next;
+}
+p->next = NULL;
+return head;
+}
+
+Tree* MakeTreeNode(char* item,int BranchCount) {
 Tree* newp;
 newp = (Tree*)malloc(sizeof(Tree));
 newp->item = (char*)malloc(strlen(item)+1);
 strcpy(newp->item,item);
-newp->right = NULL;
-newp->left = NULL;
+newp->TreeBranch = MakeTreeBranch(BranchCount);
 return newp;
 }
 
-List* LinkEnd(List* head,List* p1) {
+List* LinkListEnd(List* head,List* p1) {
 List* p;
 for(p = head; p->next != NULL; p = p->next);
 p->next = p1;
 return head;
 }
 
-List* LinkNode(List* head,List* p1,int index) {
+List* LinkListNode(List* head,List* p1,int index) {
 List* p;
 int i = 0;
 for(p = head; p->next != NULL; p = p->next) {
@@ -51,7 +68,7 @@ break;
 return head;
 }
 
-List* GetNode(List* head,int index) {
+List* GetListNode(List* head,int index) {
 List* p = head;
 for(int i = 0; p->next != NULL; p = p->next) {
 if(i == index) {break;}
@@ -60,7 +77,20 @@ if(i == index) {break;}
 return p;
 }
 
-List* RemoveNode(List* head,int index) {
+Tree* AppendTreeNode(Tree* head,Tree* p,int index) {
+Branch* HeadBranch = head->TreeBranch;
+for(int i = 0;HeadBranch->next != NULL;++i) {if(i == index) {HeadBranch->node = p;break;}}
+return head;
+}
+
+Tree* MoveDownTree(Tree* head,int PathNumber) {
+Branch* HeadBranch = head->TreeBranch;
+Tree* p;
+for(int i = 0;HeadBranch->next != NULL;++i) {if(i == PathNumber) {p = HeadBranch->node;break;}}
+return p;
+}
+
+List* RemoveListNode(List* head,int index) {
 List* p;
 List* prev;
 int i = 0;
